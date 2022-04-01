@@ -18,9 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private TextView mNameView;
     private TextView mAgeView;
-//    private ListView mUserList;
-//    private ArrayAdapter<String> mUsername;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +27,10 @@ public class MainActivity extends AppCompatActivity {
         mNameView = (TextView) findViewById(R.id.nameTV);
         mAgeView = (TextView) findViewById(R.id.ageTV);
 
-
         mDatabase = FirebaseDatabase.getInstance("https://testforc-7b1f7-default-rtdb.europe-west1.firebasedatabase.app/");
         mDatabaseRef = mDatabase.getReference("Name");
-//        mDatabase.setValue("Hello, World!");
-//        mUserList = (ListView) findViewById(R.id.user_List);
 
-//        I am not quite happy about having to use two differnet event listeners to get the name and age. But this exercise meets the purpose it was intended for and that is to grab data from the database.
+//        I am not quite happy about having to use two different event listeners to get the name and age. But this exercise meets the purpose it was intended for and that is to grab data from the database.
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
