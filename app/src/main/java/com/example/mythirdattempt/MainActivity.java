@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,8 +14,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DatabaseReference mDatabase;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseRef;
     private TextView mNameView;
+    private TextView mAgeView;
 //    private ListView mUserList;
 //    private ArrayAdapter<String> mUsername;
 
@@ -27,16 +27,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDatabase = FirebaseDatabase.getInstance("https://testforc-7b1f7-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Name");;
+        mNameView = (TextView) findViewById(R.id.nameTV);
+        mAgeView = (TextView) findViewById(R.id.ageTV);
+
+
+        mDatabase = FirebaseDatabase.getInstance("https://testforc-7b1f7-default-rtdb.europe-west1.firebasedatabase.app/");
+        mDatabaseRef = mDatabase.getReference("Name");
 //        mDatabase.setValue("Hello, World!");
 //        mUserList = (ListView) findViewById(R.id.user_List);
-        mNameView = (TextView) findViewById(R.id.nameTV);
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+//        I am not quite happy about having to use two differnet event listeners to get the name and age. But this exercise meets the purpose it was intended for and that is to grab data from the database.
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.getValue().toString();
                 mNameView.setText("Name: "+ name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mDatabaseRef = mDatabase.getReference("Age");
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String age = snapshot.getValue().toString();
+                mAgeView.setText("Age: "+age);
             }
 
             @Override
